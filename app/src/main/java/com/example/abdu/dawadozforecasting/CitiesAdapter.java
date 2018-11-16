@@ -29,8 +29,8 @@ public class CitiesAdapter extends ArrayAdapter<City>{
 
         City item = getItem(position);
         TextView strength =  listItemView.findViewById(R.id.temperature);
-        int temperature = item.getTodayTemp();
-        strength.setText(Double.toString(temperature));
+        char temperature = item.getName().charAt(0);
+        strength.setText(Character.toString(temperature));
         GradientDrawable temperatureCircle = (GradientDrawable) strength.getBackground();
 
         // Get the appropriate background color based on the current temperature

@@ -15,8 +15,8 @@ import java.util.ArrayList;
  * Created by Abdu on 11/16/2018.
  */
 
-public class TemperatureAdapter extends ArrayAdapter<Integer> {
-    TemperatureAdapter(Activity context, ArrayList<Integer> Items){ super(context, 0, Items);}
+public class TemperatureAdapter extends ArrayAdapter<Temperature> {
+    TemperatureAdapter(Activity context, ArrayList<Temperature> Items){ super(context, 0, Items);}
     public static boolean isBetween(int x, int lower, int upper) {
         return lower <= x && x <= upper;
     }
@@ -24,23 +24,22 @@ public class TemperatureAdapter extends ArrayAdapter<Integer> {
     public int gettemperatureColor(double temperature) {
         int temperatureColorResourceId;
         int temperatureFloor = (int) Math.floor(temperature);
-
-        if(temperatureFloor < 3){
+        if(temperatureFloor < 37){
             temperatureColorResourceId = R.color.temperature1;
         }
-        else if(isBetween(temperatureFloor, 3, 10)){
+        else if(isBetween(temperatureFloor, 37, 50)){
             temperatureColorResourceId = R.color.temperature2;
         }
-        else if(isBetween(temperatureFloor, 11, 18)){
+        else if(isBetween(temperatureFloor, 51, 80)){
             temperatureColorResourceId = R.color.temperature3;
         }
-        else if(isBetween(temperatureFloor, 19, 25)){
+        else if(isBetween(temperatureFloor, 81, 130)){
             temperatureColorResourceId = R.color.temperature4;
         }
-        else if(isBetween(temperatureFloor, 26, 32)){
+        else if(isBetween(temperatureFloor, 131, 170)){
             temperatureColorResourceId = R.color.temperature5;
         }
-        else if(isBetween(temperatureFloor, 33, 40)){
+        else if(isBetween(temperatureFloor, 171, 250)){
             temperatureColorResourceId = R.color.temperature7;
         }
         else{
@@ -60,20 +59,23 @@ public class TemperatureAdapter extends ArrayAdapter<Integer> {
             listItemView = LayoutInflater.from(getContext()).inflate(R.layout.temperatures, parent, false);
         }
 
-        int temperature = getItem(position);
+        Temperature temperature = getItem(position);
         TextView strength =  listItemView.findViewById(R.id.temperature);
-
-        strength.setText(Integer.toString(temperature));
+        int temp = (int) temperature.getTemp();
+        strength.setText(Integer.toString(temp));
         GradientDrawable temperatureCircle = (GradientDrawable) strength.getBackground();
 
         // Get the appropriate background color based on the current temperature
-        int temperatureColor = gettemperatureColor(temperature);
+        int temperatureColor = gettemperatureColor(temperature.getTemp());
 
         // Set the color on the temperature circle
         temperatureCircle.setColor(temperatureColor);
-        TextView day =  listItemView.findViewById(R.id.day);
 
-        day.setText("Friday");
+        TextView description = listItemView.findViewById(R.id.description);
+        description.setText(temperature.getDescription());
+        TextView time =  listItemView.findViewById(R.id.time);
+        time.setText(temperature.getTime());
+
 
         return listItemView;
     }

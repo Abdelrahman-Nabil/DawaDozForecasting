@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import java.util.ArrayList;
+
 public class CityTemperatures extends AppCompatActivity {
 
     @Override
@@ -16,8 +18,11 @@ public class CityTemperatures extends AppCompatActivity {
 
         Intent intent = getIntent();
         ListView tempList = findViewById(R.id.list);
+        Bundle args = intent.getBundleExtra("BUNDLE");
+        ArrayList<Temperature> temps = (ArrayList<Temperature>) args.getSerializable("ARRAYLIST");
         final TemperatureAdapter adapter = new TemperatureAdapter(
-                this, intent.getIntegerArrayListExtra("temps"));
+                this, temps);
+
         tempList.setAdapter(adapter);
 
     }

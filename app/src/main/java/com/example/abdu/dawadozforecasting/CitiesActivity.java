@@ -1,18 +1,29 @@
 package com.example.abdu.dawadozforecasting;
 
+import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Logger;
 
-public class CitiesActivity extends AppCompatActivity {
+public class CitiesActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<City>> {
+
+    private static final String _URL = "https://samples.openweathermap.org/data/2.5/forecast?id=3067696&APPID={f70c0764ff0fbf5b2a19b45a150e5fda}";
+    private CitiesAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,22 +31,61 @@ public class CitiesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_cities);
 
         ArrayList<City> Cities = new ArrayList<>();
-        Cities.add(new City("San Francisco", 2));
-        Cities.add(new City("Giza", 31));
-        Cities.add(new City("Prague", 16));
         ListView CitiesList = findViewById(R.id.list);
-        final CitiesAdapter adapter = new CitiesAdapter(
+        adapter = new CitiesAdapter(
                 this, Cities);
         CitiesList.setAdapter(adapter);
+        ImageView emptyView = findViewById(R.id.empty_view);
+        CitiesList.setEmptyView(emptyView);
         CitiesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 City city = adapter.getItem(i);
                 Intent showTemps = new Intent(CitiesActivity.this, CityTemperatures.class);
-                showTemps.putExtra("city", city.getName());
-                showTemps.putExtra("temps", city.getTemperatures());
+
+                Bundle args = new Bundle();
+                args.putSerializable("ARRAYLIST",(Serializable)city.getTemperatures());
+                showTemps.putExtra("BUNDLE",args);
+
                 CitiesActivity.this.startActivity(showTemps);
             }
         });
+        ConnectivityManager connMgr = (ConnectivityManager)
+                CitiesActivity.this.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+
+        // If there is a network connection, fetch data
+        if (networkInfo != null && networkInfo.isConnected()) {
+            // Get a reference to the LoaderManager, in order to interact with loaders.
+            LoaderManager loaderManager = getSupportLoaderManager();
+
+            Log.e("loaderManager", loaderManager.toString());
+            loaderManager.initLoader(1, null, this);
+        }
+        else {
+            Toast.makeText(this, "No internet access", Toast.LENGTH_SHORT).show();
+            emptyView.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public Loader<List<City>> onCreateLoader(int id, Bundle args) {
+        return new CitiesLoader(CitiesActivity.this, _URL);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<List<City>> loader, List<City> data) {
+        adapter.clear();
+
+        if (data != null && !data.isEmpty()) {
+            adapter.addAll(data);
+        }
+        data.clear();
+    }
+
+    @Override
+    public void onLoaderReset(Loader<List<City>> loader) {
+        adapter.clear();
     }
 }

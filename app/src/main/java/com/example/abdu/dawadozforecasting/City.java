@@ -8,25 +8,29 @@ import java.util.ArrayList;
 
 public class City {
 
-    private ArrayList<Integer> temperatures;
+    private ArrayList<Temperature> temperatures;
     private String name;
 
-    City(String name, int temp) {
+    City(){
         temperatures = new ArrayList<>();
-        this.name = name;
-        temperatures.add(temp);
     }
 
-    public ArrayList<Integer> getTemperatures() {
+    public ArrayList<Temperature> getTemperatures() {
         return temperatures;
     }
 
     public String getName() {
         return name;
     }
-    public int getTodayTemp(){
-        return temperatures.get(0);
+    public void setName(String Name) {
+        name = Name;
     }
+
+    public void addTemperature(double temp, String desc, String time){
+
+        temperatures.add(new Temperature(temp, desc, time));
+    }
+
 
 
 }
