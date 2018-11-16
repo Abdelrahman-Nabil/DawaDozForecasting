@@ -28,21 +28,19 @@ public class Query {
             JSONObject result = new JSONObject(makeHttpRequest(link));
             extractFeatureFromJson(result);
 
-            link = createUrl("https://samples.openweathermap.org/data/2.5/forecast?id=4908066&APPID={f70c0764ff0fbf5b2a19b45a150e5fda}");
+            link = createUrl("https://samples.openweathermap.org/data/2.5/forecast?q=London,us&APPID={f70c0764ff0fbf5b2a19b45a150e5fda}");
             result = new JSONObject(makeHttpRequest(link));
             extractFeatureFromJson(result);
 
-            link = createUrl("https://samples.openweathermap.org/data/2.5/forecast?id=3067696&APPID={f70c0764ff0fbf5b2a19b45a150e5fda}");
+            link = createUrl("https://samples.openweathermap.org/data/2.5/forecast?lat=35&lon=139&APPID={f70c0764ff0fbf5b2a19b45a150e5fda}");
             result = new JSONObject(makeHttpRequest(link));
             extractFeatureFromJson(result);
 
-            link = createUrl("https://samples.openweathermap.org/data/2.5/forecast?id=292968&APPID={f70c0764ff0fbf5b2a19b45a150e5fda}");
+            link = createUrl("https://samples.openweathermap.org/data/2.5/forecast?zip=94040&APPID={f70c0764ff0fbf5b2a19b45a150e5fda}");
             result = new JSONObject(makeHttpRequest(link));
             extractFeatureFromJson(result);
 
-            link = createUrl("https://samples.openweathermap.org/data/2.5/forecast?id=4104031&APPID={f70c0764ff0fbf5b2a19b45a150e5fda}");
-            result = new JSONObject(makeHttpRequest(link));
-            extractFeatureFromJson(result);
+
 
             return citiesResult;
         } catch (Exception err) {
@@ -51,7 +49,7 @@ public class Query {
 
     }
 
-    private static String makeHttpRequest(URL url) throws IOException {
+    public static String makeHttpRequest(URL url) throws IOException {
         String jsonResponse;
         HttpURLConnection urlConnection = null;
         InputStream inputStream = null;
@@ -79,7 +77,8 @@ public class Query {
         return jsonResponse;
     }
 
-    private static String readFromStream(InputStream inputStream) throws IOException {
+    public static String readFromStream(InputStream inputStream) throws IOException {
+
         StringBuilder output = new StringBuilder();
         if (inputStream != null) {
             InputStreamReader inputStreamReader = new InputStreamReader(inputStream, Charset.forName("UTF-8"));
@@ -93,7 +92,7 @@ public class Query {
         return output.toString();
     }
 
-    private static URL createUrl(String stringUrl) {
+    public static URL createUrl(String stringUrl) {
         URL url;
         try {
             url = new URL(stringUrl);
@@ -103,10 +102,9 @@ public class Query {
         return url;
     }
 
-    private static ArrayList<City> extractFeatureFromJson(JSONObject response) {
+    public static ArrayList<City> extractFeatureFromJson(JSONObject response) {
         try {
 
-            Log.e("I reached extract f", "i reached HERE!");
 
             City city = new City();
             if (response != null) {
@@ -116,15 +114,12 @@ public class Query {
                     JSONObject hoursTemp = results.getJSONObject(i);
                     JSONObject main = hoursTemp.getJSONObject("main");
                     Double temp =  main.getDouble("temp");
-                    Log.e("temp Val", Double.toString(temp));
 
                     JSONArray weathCondition = hoursTemp.getJSONArray("weather");
                     JSONObject weathDisrciption = weathCondition.getJSONObject(0);
                     String description = weathDisrciption.getString("description");
-                    Log.e("description Val", description);
 
                     String time = hoursTemp.getString("dt_txt");
-                    Log.e("time Val", time);
 
                     city.addTemperature(temp, description, time);
 
