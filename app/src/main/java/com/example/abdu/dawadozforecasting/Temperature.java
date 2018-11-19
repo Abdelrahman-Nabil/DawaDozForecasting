@@ -9,7 +9,7 @@ import java.util.ArrayList;
  * Created by Abdu on 11/16/2018.
  */
 
-public class Temperature implements Serializable {
+public class Temperature extends SugarRecord implements Serializable {
 
     private double temp;
     private String time;
@@ -21,7 +21,9 @@ public class Temperature implements Serializable {
         description = desc;
         cityName = city;
     }
+    Temperature(){
 
+    }
     public double getTemp(){
         return temp;
     }

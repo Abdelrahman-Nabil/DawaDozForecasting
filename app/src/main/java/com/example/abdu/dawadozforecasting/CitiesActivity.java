@@ -15,6 +15,9 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.orm.SugarDb;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +36,8 @@ public class CitiesActivity extends AppCompatActivity implements LoaderManager.L
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cities);
-
+        SugarDb db = new SugarDb(this);
+        db.onCreate(db.getWritableDatabase());
         ListView CitiesList = findViewById(R.id.list);
         adapter = new CitiesAdapter(
                 this, Cities);
@@ -75,26 +79,26 @@ public class CitiesActivity extends AppCompatActivity implements LoaderManager.L
             // Get a reference to the LoaderManager, in order to interact with loaders.
             LoaderManager loaderManager = getSupportLoaderManager();
 
-            Log.e("loaderManager", loaderManager.toString());
             loaderManager.initLoader(1, null, this);
-            /*for(int i =0 ;i<adapter.getCount(); i++){
+            for(int i =0 ;i<adapter.getCount(); i++){
                 for(int j =0;j<adapter.getItem(i).getTemperatures().size(); j++){
                     adapter.getItem(i).getTemperatures().get(j).save();
                 }
-            }*/
+            }
+
+
 
         }
         else {
             Toast.makeText(this, "No internet access, attempting to retrieve data..", Toast.LENGTH_SHORT).show();
             //emptyView.setVisibility(View.VISIBLE);
-            /*List<Temperature>  temps = null;
+            List<Temperature>  temps = null;
 
             temps= Temperature.listAll(Temperature.class);
             Cities.clear();
-        for(int i =0; i<temps.size(); i++){
+        /*for(int i =0; i<temps.size(); i++){
             Cities.add(new City(cities.get(i).getName(), cities.get(i).getTemperatures()));
-        }
-        adapter.notifyDataSetChanged();
+        }*/
             ArrayList<City> C = new ArrayList<>();
             for(int i =0; i<temps.size(); i++){
                 City c = new City();
@@ -112,7 +116,7 @@ public class CitiesActivity extends AppCompatActivity implements LoaderManager.L
             adapter = new CitiesAdapter(
                     this, C);
             CitiesList.setAdapter(adapter);
-            adapter.notifyDataSetChanged();*/
+            adapter.notifyDataSetChanged();
 
 
 
