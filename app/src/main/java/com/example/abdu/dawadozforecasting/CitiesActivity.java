@@ -71,11 +71,9 @@ public class CitiesActivity extends AppCompatActivity implements LoaderManager.L
 
         // If there is a network connection, fetch data
         if (networkInfo != null && networkInfo.isConnected()) {
-            //List<Temperature> temps= Temperature.listAll(Temperature.class);
             spinner.setVisibility(View.VISIBLE);
 
             Temperature.deleteAll(Temperature.class);
-            // Get a reference to the LoaderManager, in order to interact with loaders.
             LoaderManager loaderManager = getSupportLoaderManager();
             loaderManager.initLoader(1, null, this);
 
