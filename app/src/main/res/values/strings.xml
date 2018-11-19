@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">DawaDoz Forecasting</string>
+    <string name="Contact_Us">Contact Us </string>
+    <string name="mobile">0111-960-9164</string>
+    <string name="email">abdelrahman.nabil96@gmail.com</string>
 </resources>

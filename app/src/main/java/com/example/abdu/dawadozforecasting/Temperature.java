@@ -1,5 +1,7 @@
 package com.example.abdu.dawadozforecasting;
 
+import com.orm.SugarRecord;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -7,15 +9,17 @@ import java.util.ArrayList;
  * Created by Abdu on 11/16/2018.
  */
 
-public class Temperature implements Serializable{
+public class Temperature implements Serializable {
+
     private double temp;
     private String time;
     private String description;
-
-    Temperature(double T, String ti, String desc){
+    private String cityName;
+    Temperature(double T, String ti, String desc, String city){
         temp = T;
         time = ti;
         description = desc;
+        cityName = city;
     }
 
     public double getTemp(){
@@ -35,5 +39,11 @@ public class Temperature implements Serializable{
     }
     public void setDescription(String name){
         description = name;
+    }
+    public String getCityName(){
+        return cityName;
+    }
+    public void setCityName(String name){
+        cityName = name;
     }
 }

@@ -15,6 +15,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class Query {
@@ -40,7 +41,13 @@ public class Query {
             result = new JSONObject(makeHttpRequest(link));
             extractFeatureFromJson(result);
 
-
+            /*for(int i =0 ;i<citiesResult.size(); i++){
+                for(int j =0;j<citiesResult.get(i).getTemperatures().size(); j++){
+                    citiesResult.get(i).getTemperatures().get(j).save();
+                }
+            }
+            List<Temperature> temps= Temperature.listAll(Temperature.class);
+*/
 
             return citiesResult;
         } catch (Exception err) {
@@ -108,7 +115,9 @@ public class Query {
 
             City city = new City();
             if (response != null) {
-
+                JSONObject name = response.getJSONObject("city");
+                String cityName = name.getString("name");
+                city.setName(cityName);
                 JSONArray results = response.getJSONArray("list");
                 for (int i = 0; i < results.length(); i++) {
                     JSONObject hoursTemp = results.getJSONObject(i);
@@ -121,13 +130,11 @@ public class Query {
 
                     String time = hoursTemp.getString("dt_txt");
 
-                    city.addTemperature(temp, description, time);
+                    city.addTemperature(temp, description, time, city.getName());
 
                 }
 
-                JSONObject name = response.getJSONObject("city");
-                String cityName = name.getString("name");
-                city.setName(cityName);
+
                 citiesResult.add(city);
 
 

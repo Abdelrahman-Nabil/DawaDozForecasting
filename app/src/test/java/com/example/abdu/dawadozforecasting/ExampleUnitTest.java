@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 import static com.example.abdu.dawadozforecasting.Query.createUrl;
 import static com.example.abdu.dawadozforecasting.Query.extractFeatureFromJson;
@@ -29,8 +30,8 @@ public class ExampleUnitTest {
     @Test
     public void QueryTest() throws JSONException {
         JSONObject response = null;
-        ArrayList<City> actual = extractFeatureFromJson(response);
-        assertEquals(new ArrayList<City>(), actual);
+        List<City> actual = extractFeatureFromJson(response);
+        assertEquals(null, actual);
     }
 
     @Test
