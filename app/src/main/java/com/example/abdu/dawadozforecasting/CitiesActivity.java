@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.orm.SugarDb;
@@ -30,6 +31,7 @@ public class CitiesActivity extends AppCompatActivity implements LoaderManager.L
     private static final String _URL = "https://samples.openweathermap.org/data/2.5/forecast?id=3067696&APPID={f70c0764ff0fbf5b2a19b45a150e5fda}";
     private CitiesAdapter adapter;
     private static ArrayList<City> Cities = new ArrayList<>();
+    public static ProgressBar spinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,8 +44,9 @@ public class CitiesActivity extends AppCompatActivity implements LoaderManager.L
         adapter = new CitiesAdapter(
                 this, Cities);
         CitiesList.setAdapter(adapter);
-        ImageView emptyView = findViewById(R.id.empty_view);
-        CitiesList.setEmptyView(emptyView);
+        /*ImageView emptyView = findViewById(R.id.empty_view);
+        CitiesList.setEmptyView(emptyView);*/
+        spinner = (ProgressBar)findViewById(R.id.progressBar1);
         CitiesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -75,16 +78,13 @@ public class CitiesActivity extends AppCompatActivity implements LoaderManager.L
 
         // If there is a network connection, fetch data
         if (networkInfo != null && networkInfo.isConnected()) {
-            //City.deleteAll(City.class);
+            //List<Temperature> temps= Temperature.listAll(Temperature.class);
+            spinner.setVisibility(View.VISIBLE);
+
+            Temperature.deleteAll(Temperature.class);
             // Get a reference to the LoaderManager, in order to interact with loaders.
             LoaderManager loaderManager = getSupportLoaderManager();
-
             loaderManager.initLoader(1, null, this);
-            for(int i =0 ;i<adapter.getCount(); i++){
-                for(int j =0;j<adapter.getItem(i).getTemperatures().size(); j++){
-                    adapter.getItem(i).getTemperatures().get(j).save();
-                }
-            }
 
 
 
@@ -93,30 +93,37 @@ public class CitiesActivity extends AppCompatActivity implements LoaderManager.L
             Toast.makeText(this, "No internet access, attempting to retrieve data..", Toast.LENGTH_SHORT).show();
             //emptyView.setVisibility(View.VISIBLE);
             List<Temperature>  temps = null;
-
+            spinner.setVisibility(View.VISIBLE);
             temps= Temperature.listAll(Temperature.class);
             Cities.clear();
         /*for(int i =0; i<temps.size(); i++){
             Cities.add(new City(cities.get(i).getName(), cities.get(i).getTemperatures()));
         }*/
-            ArrayList<City> C = new ArrayList<>();
-            for(int i =0; i<temps.size(); i++){
-                City c = new City();
-                if(!C.contains(temps.get(i).getCityName())) {
-                    c.setName(temps.get(i).getCityName());
-                    for (int j = 0; j < temps.size(); j++) {
-                        if(temps.get(j).getCityName().equals(c.getName())){
-                            c.addTemperature(temps.get(j).getTemp(), temps.get(j).getTime(),temps.get(j).getDescription(), temps.get(j).getCityName());
-                        }
-                    }
+            ArrayList<String> C = new ArrayList<>();
+            ArrayList<City> citiesList = new ArrayList<>();
+            for(int i = 0; i<temps.size(); i++){
+                if(!C.contains(temps.get(i).getCityName())){
+                    C.add(temps.get(i).getCityName());
                 }
-                C.add(c);
+            }
+            String cityName; ArrayList<Temperature> cityTemps;
+            for(int j = 0 ;j<C.size(); j++){
+                cityName = C.get(j);
+                cityTemps = new ArrayList<>();
+                for(int k = 0; k<temps.size(); k++){
+                    if(temps.get(k).getCityName().equals(C.get(j))){
+                        cityTemps.add(temps.get(k));
 
+                    }
+
+                }
+                citiesList.add(new City(cityName, cityTemps));
             }
             adapter = new CitiesAdapter(
-                    this, C);
+                    this, citiesList);
             CitiesList.setAdapter(adapter);
             adapter.notifyDataSetChanged();
+            spinner.setVisibility(View.GONE);
 
 
 
@@ -136,10 +143,14 @@ public class CitiesActivity extends AppCompatActivity implements LoaderManager.L
             adapter.addAll(data);
             data.clear();
         }
+        spinner.setVisibility(View.GONE);
+
     }
 
     @Override
     public void onLoaderReset(Loader<List<City>> loader) {
         adapter.clear();
     }
+
+
 }

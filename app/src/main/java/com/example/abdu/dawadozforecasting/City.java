@@ -32,10 +32,11 @@ public class City {
         name = Name;
     }
 
-    public void addTemperature(double temp, String desc, String time, String cityName){
+    public void addTemperature(Temperature temp){
 
-        temperatures.add(new Temperature(temp, desc, time, cityName));
+        temperatures.add(temp);
     }
+
 
 
 

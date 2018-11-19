@@ -1,6 +1,7 @@
 package com.example.abdu.dawadozforecasting;
 
 import android.util.Log;
+import android.view.View;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -16,6 +17,8 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.example.abdu.dawadozforecasting.CitiesActivity.spinner;
 
 
 public class Query {
@@ -41,13 +44,12 @@ public class Query {
             result = new JSONObject(makeHttpRequest(link));
             extractFeatureFromJson(result);
 
-            /*for(int i =0 ;i<citiesResult.size(); i++){
+            for(int i =0 ;i<citiesResult.size(); i++){
                 for(int j =0;j<citiesResult.get(i).getTemperatures().size(); j++){
                     citiesResult.get(i).getTemperatures().get(j).save();
                 }
             }
-            List<Temperature> temps= Temperature.listAll(Temperature.class);
-*/
+
 
             return citiesResult;
         } catch (Exception err) {
@@ -129,8 +131,8 @@ public class Query {
                     String description = weathDisrciption.getString("description");
 
                     String time = hoursTemp.getString("dt_txt");
-
-                    city.addTemperature(temp, description, time, city.getName());
+                    Temperature T = new Temperature(temp, description, time, city.getName());
+                    city.addTemperature(T);
 
                 }
 

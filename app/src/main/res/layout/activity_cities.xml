@@ -9,14 +9,13 @@
         android:layout_height="match_parent"
         android:orientation="vertical" />
         <!-- Empty view is only visible when the list has no items. -->
-    <ImageView
-        android:id="@+id/empty_view"
+    <ProgressBar
+        android:id="@+id/progressBar1"
+        style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:src="@drawable/no_internet"
-        android:textAppearance="?android:textAppearanceMedium"
-        android:visibility="invisible" />
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"

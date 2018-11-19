@@ -11,19 +11,20 @@ import java.util.ArrayList;
 
 public class Temperature extends SugarRecord implements Serializable {
 
-    private double temp;
-    private String time;
-    private String description;
-    private String cityName;
+    public double temp;
+    public String time;
+    public String description;
+    public String cityName;             //public to be able to access it in DB
+    public Temperature(){
+
+    }
     Temperature(double T, String ti, String desc, String city){
         temp = T;
         time = ti;
         description = desc;
         cityName = city;
     }
-    Temperature(){
 
-    }
     public double getTemp(){
         return temp;
     }
