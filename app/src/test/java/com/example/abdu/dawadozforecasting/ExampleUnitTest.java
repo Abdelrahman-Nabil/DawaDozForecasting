@@ -16,26 +16,17 @@ import static com.example.abdu.dawadozforecasting.Query.makeHttpRequest;
 import static com.example.abdu.dawadozforecasting.Query.readFromStream;
 import static org.junit.Assert.*;
 
-/**
- * Example local unit test, which will execute on the development machine (host).
- *
- * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
- */
+
 public class ExampleUnitTest {
-    @Test
-    public void addition_isCorrect() throws Exception {
-        assertEquals(4, 2 + 2);
-    }
 
     @Test
     public void QueryTest() throws JSONException {
-        JSONObject response = null;
-        List<City> actual = extractFeatureFromJson(response);
+        List<City> actual = extractFeatureFromJson(null);
         assertEquals(null, actual);
     }
 
     @Test
-    public void HttpRequestTest() throws IOException{
+    public void HttpRequestTest() throws IOException {
         URL url = createUrl("https://google.com"); //this should not return correct JSON
         String JsonResponse = makeHttpRequest(url);
         assertNotEquals(null, JsonResponse);
@@ -44,8 +35,9 @@ public class ExampleUnitTest {
         JsonResponse = makeHttpRequest(url);
         assertNotEquals(null, JsonResponse);
     }
+
     @Test
-    public void readStreamTest()  throws IOException{
+    public void readStreamTest() throws IOException {
         URL url = createUrl("https://samples.openweathermap.org/data/2.5/weather?q=London,uk&APPID={f70c0764ff0fbf5b2a19b45a150e5fda}");
         String JsonResponse = makeHttpRequest(url);
 

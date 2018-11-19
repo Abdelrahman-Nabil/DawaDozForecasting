@@ -1,8 +1,5 @@
 package com.example.abdu.dawadozforecasting;
 
-import android.util.Log;
-import android.view.View;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -16,14 +13,12 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.List;
-
-import static com.example.abdu.dawadozforecasting.CitiesActivity.spinner;
 
 
 public class Query {
 
     public static ArrayList<City> citiesResult = new ArrayList<>();
+
     public static ArrayList<City> extractCity(String url) {
 
         try {
@@ -44,8 +39,8 @@ public class Query {
             result = new JSONObject(makeHttpRequest(link));
             extractFeatureFromJson(result);
 
-            for(int i =0 ;i<citiesResult.size(); i++){
-                for(int j =0;j<citiesResult.get(i).getTemperatures().size(); j++){
+            for (int i = 0; i < citiesResult.size(); i++) {
+                for (int j = 0; j < citiesResult.get(i).getTemperatures().size(); j++) {
                     citiesResult.get(i).getTemperatures().get(j).save();
                 }
             }
@@ -124,7 +119,7 @@ public class Query {
                 for (int i = 0; i < results.length(); i++) {
                     JSONObject hoursTemp = results.getJSONObject(i);
                     JSONObject main = hoursTemp.getJSONObject("main");
-                    Double temp =  main.getDouble("temp");
+                    Double temp = main.getDouble("temp");
 
                     JSONArray weathCondition = hoursTemp.getJSONArray("weather");
                     JSONObject weathDisrciption = weathCondition.getJSONObject(0);

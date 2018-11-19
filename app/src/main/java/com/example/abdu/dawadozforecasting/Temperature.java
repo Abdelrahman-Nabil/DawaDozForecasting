@@ -15,38 +15,47 @@ public class Temperature extends SugarRecord implements Serializable {
     public String time;
     public String description;
     public String cityName;             //public to be able to access it in DB
-    public Temperature(){
+
+    public Temperature() {
 
     }
-    Temperature(double T, String ti, String desc, String city){
+
+    Temperature(double T, String ti, String desc, String city) {
         temp = T;
         time = ti;
         description = desc;
         cityName = city;
     }
 
-    public double getTemp(){
+    public double getTemp() {
         return temp;
     }
-    public void setTemp(double T){
+
+    public void setTemp(double T) {
         temp = T;
     }
-    public String getTime(){
+
+    public String getTime() {
         return time;
     }
+
     public void setTime(String T) {
         time = T;
     }
-    public String getDescription(){
+
+    public String getDescription() {
         return description;
     }
-    public void setDescription(String name){
+
+    public void setDescription(String name) {
         description = name;
     }
-    public String getCityName(){
+
+    public String getCityName() {
         return cityName;
     }
-    public void setCityName(String name){
+
+    public void setCityName(String name) {
         cityName = name;
     }
 }

@@ -16,7 +16,10 @@ import java.util.ArrayList;
  */
 
 public class TemperatureAdapter extends ArrayAdapter<Temperature> {
-    TemperatureAdapter(Activity context, ArrayList<Temperature> Items){ super(context, 0, Items);}
+    TemperatureAdapter(Activity context, ArrayList<Temperature> Items) {
+        super(context, 0, Items);
+    }
+
     public static boolean isBetween(int x, int lower, int upper) {
         return lower <= x && x <= upper;
     }
@@ -24,25 +27,19 @@ public class TemperatureAdapter extends ArrayAdapter<Temperature> {
     public int gettemperatureColor(double temperature) {
         int temperatureColorResourceId;
         int temperatureFloor = (int) Math.floor(temperature);
-        if(temperatureFloor < 37){
+        if (temperatureFloor < 37) {
             temperatureColorResourceId = R.color.temperature1;
-        }
-        else if(isBetween(temperatureFloor, 37, 50)){
+        } else if (isBetween(temperatureFloor, 37, 50)) {
             temperatureColorResourceId = R.color.temperature2;
-        }
-        else if(isBetween(temperatureFloor, 51, 80)){
+        } else if (isBetween(temperatureFloor, 51, 80)) {
             temperatureColorResourceId = R.color.temperature3;
-        }
-        else if(isBetween(temperatureFloor, 81, 130)){
+        } else if (isBetween(temperatureFloor, 81, 130)) {
             temperatureColorResourceId = R.color.temperature4;
-        }
-        else if(isBetween(temperatureFloor, 131, 170)){
+        } else if (isBetween(temperatureFloor, 131, 170)) {
             temperatureColorResourceId = R.color.temperature5;
-        }
-        else if(isBetween(temperatureFloor, 171, 250)){
+        } else if (isBetween(temperatureFloor, 171, 250)) {
             temperatureColorResourceId = R.color.temperature7;
-        }
-        else{
+        } else {
             temperatureColorResourceId = R.color.temperature8;
         }
 
@@ -51,16 +48,15 @@ public class TemperatureAdapter extends ArrayAdapter<Temperature> {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent){
+    public View getView(int position, View convertView, ViewGroup parent) {
 
-        // check if the current view is reused else inflate the view
         View listItemView = convertView;
         if (listItemView == null) {
             listItemView = LayoutInflater.from(getContext()).inflate(R.layout.temperatures, parent, false);
         }
 
         Temperature temperature = getItem(position);
-        TextView strength =  listItemView.findViewById(R.id.temperature);
+        TextView strength = listItemView.findViewById(R.id.temperature);
         int temp = (int) temperature.getTemp();
         strength.setText(Integer.toString(temp));
         GradientDrawable temperatureCircle = (GradientDrawable) strength.getBackground();
@@ -73,7 +69,7 @@ public class TemperatureAdapter extends ArrayAdapter<Temperature> {
 
         TextView description = listItemView.findViewById(R.id.description);
         description.setText(temperature.getDescription());
-        TextView time =  listItemView.findViewById(R.id.time);
+        TextView time = listItemView.findViewById(R.id.time);
         time.setText(temperature.getTime());
 
 

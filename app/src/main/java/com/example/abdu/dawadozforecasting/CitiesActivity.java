@@ -9,10 +9,8 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -22,16 +20,13 @@ import com.orm.SugarDb;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
-
-import static com.example.abdu.dawadozforecasting.Query.citiesResult;
 
 public class CitiesActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<City>> {
 
     private static final String _URL = "https://samples.openweathermap.org/data/2.5/forecast?id=3067696&APPID={f70c0764ff0fbf5b2a19b45a150e5fda}";
-    private CitiesAdapter adapter;
-    private static ArrayList<City> Cities = new ArrayList<>();
     public static ProgressBar spinner;
+    private static ArrayList<City> Cities = new ArrayList<>();
+    private CitiesAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,9 +39,7 @@ public class CitiesActivity extends AppCompatActivity implements LoaderManager.L
         adapter = new CitiesAdapter(
                 this, Cities);
         CitiesList.setAdapter(adapter);
-        /*ImageView emptyView = findViewById(R.id.empty_view);
-        CitiesList.setEmptyView(emptyView);*/
-        spinner = (ProgressBar)findViewById(R.id.progressBar1);
+        spinner = findViewById(R.id.progressBar1);
         CitiesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -54,8 +47,8 @@ public class CitiesActivity extends AppCompatActivity implements LoaderManager.L
                 Intent showTemps = new Intent(CitiesActivity.this, CityTemperatures.class);
 
                 Bundle args = new Bundle();
-                args.putSerializable("ARRAYLIST",(Serializable)city.getTemperatures());
-                showTemps.putExtra("BUNDLE",args);
+                args.putSerializable("ARRAYLIST", (Serializable) city.getTemperatures());
+                showTemps.putExtra("BUNDLE", args);
 
                 CitiesActivity.this.startActivity(showTemps);
             }
@@ -87,31 +80,26 @@ public class CitiesActivity extends AppCompatActivity implements LoaderManager.L
             loaderManager.initLoader(1, null, this);
 
 
-
-        }
-        else {
+        } else {
             Toast.makeText(this, "No internet access, attempting to retrieve data..", Toast.LENGTH_SHORT).show();
-            //emptyView.setVisibility(View.VISIBLE);
-            List<Temperature>  temps = null;
+            List<Temperature> temps = null;
             spinner.setVisibility(View.VISIBLE);
-            temps= Temperature.listAll(Temperature.class);
+            temps = Temperature.listAll(Temperature.class);
             Cities.clear();
-        /*for(int i =0; i<temps.size(); i++){
-            Cities.add(new City(cities.get(i).getName(), cities.get(i).getTemperatures()));
-        }*/
             ArrayList<String> C = new ArrayList<>();
             ArrayList<City> citiesList = new ArrayList<>();
-            for(int i = 0; i<temps.size(); i++){
-                if(!C.contains(temps.get(i).getCityName())){
+            for (int i = 0; i < temps.size(); i++) {
+                if (!C.contains(temps.get(i).getCityName())) {
                     C.add(temps.get(i).getCityName());
                 }
             }
-            String cityName; ArrayList<Temperature> cityTemps;
-            for(int j = 0 ;j<C.size(); j++){
+            String cityName;
+            ArrayList<Temperature> cityTemps;
+            for (int j = 0; j < C.size(); j++) {
                 cityName = C.get(j);
                 cityTemps = new ArrayList<>();
-                for(int k = 0; k<temps.size(); k++){
-                    if(temps.get(k).getCityName().equals(C.get(j))){
+                for (int k = 0; k < temps.size(); k++) {
+                    if (temps.get(k).getCityName().equals(C.get(j))) {
                         cityTemps.add(temps.get(k));
 
                     }
@@ -124,7 +112,6 @@ public class CitiesActivity extends AppCompatActivity implements LoaderManager.L
             CitiesList.setAdapter(adapter);
             adapter.notifyDataSetChanged();
             spinner.setVisibility(View.GONE);
-
 
 
         }

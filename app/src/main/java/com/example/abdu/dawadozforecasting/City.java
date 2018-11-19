@@ -1,7 +1,5 @@
 package com.example.abdu.dawadozforecasting;
 
-import com.orm.SugarRecord;
-import com.orm.dsl.Ignore;
 
 import java.util.ArrayList;
 
@@ -13,14 +11,16 @@ public class City {
 
     private ArrayList<Temperature> temperatures;
     private String name;
-    City(){
+
+    City() {
         temperatures = new ArrayList<>();
     }
 
-    City(String n, ArrayList<Temperature> temps){
+    City(String n, ArrayList<Temperature> temps) {
         name = n;
         temperatures = temps;
     }
+
     public ArrayList<Temperature> getTemperatures() {
         return temperatures;
     }
@@ -28,16 +28,15 @@ public class City {
     public String getName() {
         return name;
     }
+
     public void setName(String Name) {
         name = Name;
     }
 
-    public void addTemperature(Temperature temp){
+    public void addTemperature(Temperature temp) {
 
         temperatures.add(temp);
     }
-
-
 
 
 }
